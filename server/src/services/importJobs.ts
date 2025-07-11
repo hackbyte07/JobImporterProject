@@ -3,8 +3,6 @@ import ImportLog from "../models/ImportLog";
 import { fetchJobsFromFeed } from "./fetchJobs";
 
 const FEEDS = [
-  "https://www.higheredjobs.com/rss/articleFeed.cfm",
-
   "https://jobicy.com/?feed=job_feed",
   "https://jobicy.com/?feed=job_feed&job_categories=smm&job_types=full-time",
   "https://jobicy.com/?feed=job_feed&job_categories=seller&job_types=full-time&search_region=france",
