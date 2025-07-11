@@ -1,7 +1,8 @@
 import Express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import "./jobs/worker"; //
+import "./jobs/worker";
+import "./schedulers/importJobsScheduler";
 import { env } from "./config/env";
 import importRouter from "./routes/importRoute";
 
