@@ -12,16 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchJobsFromFeed = fetchJobsFromFeed;
-const axios_1 = __importDefault(require("axios"));
-const node_https_1 = require("node:https");
-const parseXML_1 = require("../utils/parseXML");
-const agent = new node_https_1.Agent({
-    rejectUnauthorized: false,
-});
-function fetchJobsFromFeed(feedUrl) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield axios_1.default.get(feedUrl, { httpsAgent: agent });
-        return (0, parseXML_1.parseXML)(response === null || response === void 0 ? void 0 : response.data);
-    });
-}
+// Create jobs every hour
+const importJobs_1 = require("../services/importJobs");
+const node_cron_1 = __importDefault(require("node-cron"));
+node_cron_1.default.schedule("0 0 * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, importJobs_1.importAllFeeds)();
+    console.log("Import jobs executed");
+}));

@@ -13,5 +13,5 @@ exports.redisConnection = new ioredis_1.Redis({
     username: "default",
     password: "mnv4N4PlSCODBciT401MnxcXM72k2Lcy",
     port: 10135,
-    maxRetriesPerRequest: null
+    maxRetriesPerRequest: null,
 });

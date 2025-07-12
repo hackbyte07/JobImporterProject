@@ -15,19 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const importJobs_1 = require("./services/importJobs");
-require("./jobs/worker"); //
+require("./jobs/worker");
+require("./schedulers/importJobsScheduler");
 const env_1 = require("./config/env");
+const importRoute_1 = __importDefault(require("./routes/importRoute"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-mongoose_1.default
-    .connect(process.env.MONGO_URI || "")
-    .then(() => console.log("MongoDB connected"))
-    .catch((err) => console.error("MongoDB error:", err));
-app.get("/import", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, importJobs_1.importAllFeeds)();
-    res.send("Job import started");
+app.use(express_1.default.json());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:3000",
+    credentials: true,
 }));
-app.listen(env_1.env.PORT, env_1.env.HOST, () => {
-    console.log(`Server running on port ${env_1.env.PORT}`);
+app.use(importRoute_1.default);
+const runServer = () => __awaiter(void 0, void 0, void 0, function* () {
+    mongoose_1.default
+        .connect(env_1.env.MONGO_URI)
+        .then(() => console.log("MongoDB connected"))
+        .catch((err) => console.error("MongoDB error:", err));
+    app.listen(env_1.env.PORT, env_1.env.HOST, () => {
+        console.log(`Server running on port ${env_1.env.PORT}`);
+    });
 });
+//starting server
+runServer();

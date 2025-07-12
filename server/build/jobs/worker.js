@@ -18,18 +18,17 @@ const redis_1 = require("../config/redis");
 const Job_1 = __importDefault(require("../models/Job"));
 exports.worker = new bullmq_1.Worker("jobs", (job) => __awaiter(void 0, void 0, void 0, function* () {
     const jobData = job.data;
-    const existing = yield Job_1.default.findOne({ url: jobData.url });
-    if (existing) {
-        yield Job_1.default.updateOne({ url: jobData.url }, jobData);
-        return { updated: true };
-    }
-    else {
-        yield Job_1.default.create(jobData);
-        return { created: true };
-    }
+    console.log(`Processing job ${job.id} with link: ${jobData.link}`);
+    yield Job_1.default.updateOne({ link: jobData.link }, jobData, { upsert: true });
+    return { processed: true };
 }), {
     connection: redis_1.redisConnection,
+    concurrency: 5,
+});
+exports.worker.on("completed", (job) => {
+    console.log(`Job ${job.id} completed successfully.`, "completed");
 });
 exports.worker.on("failed", (job, err) => {
-    console.error(`Job ${job === null || job === void 0 ? void 0 : job.id} failed:`, err.message);
+    console.error(`Job ${job === null || job === void 0 ? void 0 : job.id} failed:`, err.message, job === null || job === void 0 ? void 0 : job.data, "failed");
 });
+exports.default = exports.worker;

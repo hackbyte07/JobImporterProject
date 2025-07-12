@@ -36,10 +36,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const JobSchema = new mongoose_1.Schema({
     title: String,
-    company: String,
+    id: String,
+    link: String,
+    pubDate: String,
+    guid: {
+        _: String,
+        $: {
+            isPermaLink: String,
+        },
+    },
     description: String,
-    url: { type: String, required: true, unique: true },
-    location: String,
-    datePosted: Date,
+    "content:encoded": String,
+    "media:content": {
+        $: {
+            url: String,
+            medium: String,
+        },
+    },
+    "job_listing:location": String,
+    "job_listing:job_type": String,
+    "job_listing:company": String,
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Job", JobSchema);
