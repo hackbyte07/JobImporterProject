@@ -5,11 +5,18 @@ import "./jobs/worker";
 import "./schedulers/importJobsScheduler";
 import { env } from "./config/env";
 import importRouter from "./routes/importRoute";
+import cors from "cors";
 
 dotenv.config();
 const app = Express();
 
 app.use(Express.json());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(importRouter);
 

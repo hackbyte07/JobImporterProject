@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import ImportLogTable from "../components/ImportLogTable";
 import { groupBy, uniq } from "lodash-es";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface FailedJob {
   reason: string;
@@ -31,8 +33,7 @@ export default function Home() {
     );
 
     eventSource.onmessage = (event) => {
-      const newLog: ImportLog[] = JSON.parse(event.data);     
-      
+      const newLog: ImportLog[] = JSON.parse(event.data);
 
       setLogs((prev) => uniq([...newLog, ...prev])); // Add latest log on top
     };
