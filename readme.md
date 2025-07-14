@@ -1,4 +1,4 @@
-# Job Importer System — Artha Job Board Assignment
+# Job Importer System — Artha Job Board
 
 This is a full-stack MERN project to build a scalable job importer system that:
 - Pulls jobs from multiple XML-based APIs
